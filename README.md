@@ -27,13 +27,3 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
 
-#Test instructions
-- Test each CSV row number and check if it's correct - OK
-- Correct incorrectly formed numbers - OK
-- Reject numbers that are invalid - OK
-- Display acceptable numbers - OK
-- Display Corrected numbers + what was modified - OK
-- Display Incorrect numbers. - OK
-- Include a user form to test a single number and get a response with a success status/error - OK
-- Include Basic Documentation (readme) & Unit Tests
-
