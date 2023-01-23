@@ -28,12 +28,12 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 
 #Test instructions
-- Test each CSV number and check for correctness
-- Correct incorrectly formed numbers
-- Reject numbers that are invalid
-- Display acceptable numbers
-- Corrected numbers + what was modified
-- Display Incorrect numbers.
-- Include a user form to test a single number and get a response with a success status/error
+- Test each CSV row number and check if it's correct - OK
+- Correct incorrectly formed numbers - OK
+- Reject numbers that are invalid - OK
+- Display acceptable numbers - OK
+- Display Corrected numbers + what was modified - OK
+- Display Incorrect numbers. - OK
+- Include a user form to test a single number and get a response with a success status/error - OK
 - Include Basic Documentation (readme) & Unit Tests
 

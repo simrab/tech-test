@@ -1,8 +1,11 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  EventEmitter,
   forwardRef,
   Input,
+  Output,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -17,25 +20,30 @@ import {
   imports: [CommonModule],
   template: `
     <div class="position-relative">
+      <label *ngIf="label">{{ label }}</label>
       <input
         class="form-control"
         [id]="fieldName"
         [name]="fieldName"
         [type]="type"
+        [placeholder]="placeholder || 'insert a value'"
         [value]="value || ''"
-        (change)="changed($event)"
+        (keyup.enter)="enter.emit()"
+        (keyup)="changed($event)"
         (blur)="onTouched()" />
       <ng-content> </ng-content>
       <ng-container *ngIf="isSubmitted">
-        <p *ngIf="field?.hasError('required')">Required</p>
-        <p *ngIf="field?.hasError('email')">email format is incorrect</p>
-        <p *ngIf="field?.hasError('minlength')">
-          value is less than min valid length
+        <p class="text-danger fs-7 mt-2" data-cy="input-error">
+          <ng-container *ngIf="field?.hasError('required')">
+            Required
+          </ng-container>
+          <ng-container *ngIf="field?.hasError('minlength')"
+            >a valid south african telephone number has 11 digits</ng-container
+          >
         </p>
       </ng-container>
     </div>
   `,
-  styleUrls: ['./custom-input.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -46,6 +54,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomInputComponent implements ControlValueAccessor {
+  constructor(private cdr: ChangeDetectorRef) {}
+
   changed = (event: Event) => {
     if (this.onChange) {
       this.onChange((event.target as HTMLInputElement).value);
@@ -53,6 +63,9 @@ export class CustomInputComponent implements ControlValueAccessor {
   };
   value?: string;
   disabled = false;
+  touched = false;
+  @Input() label?: string;
+  @Input() placeholder?: string;
 
   @Input() isSubmitted = false;
 
@@ -61,14 +74,25 @@ export class CustomInputComponent implements ControlValueAccessor {
 
   @Input() type = 'text';
 
+  @Output() enter = new EventEmitter<void>();
+
   onTouched = () => undefined;
 
   get field() {
+    this.markAsTouched();
     return this.formGroup.get(this.fieldName);
   }
+
   onChange?: (value: string) => undefined;
   writeValue(value: string): void {
     this.value = value;
+  }
+
+  markAsTouched() {
+    if (!this.touched) {
+      this.onTouched();
+      this.touched = true;
+    }
   }
   registerOnChange(fn: () => undefined): void {
     this.onChange = fn;
